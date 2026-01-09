@@ -1,4 +1,4 @@
-#!/usr/bin/env python python2.7
+#!/usr/bin/env python python2.7 2
 # coding:utf-8
 """
 文件上传
