@@ -21,7 +21,6 @@
 - [Pipeline](#-pipeline)
 - [Quick Start](#-quick-start)
 - [Project Structure](#-project-structure)
-- [Usage Examples](#-usage-examples)
 - [Benchmark Results](#-benchmark-results)
 - [Citation](#-citation)
 - [License](#-license)
@@ -159,36 +158,158 @@ uv pip install -U -r requirements.txt
 
 Edit the configuration file `configs/dev.yaml`:
 ```yaml
-# Example configuration
-data_path: "data/chemistry"
-output_dir: "outputs"
-llm_model: "qwen-plus"
-embedding_model: "text-embedding-v3"
+# 非结构化数据
 
-# Knowledge Graph Settings
-kg:
-  backend: "neo4j"  # Options: neo4j, networkx, json
-  schema_path: "schema/chemistry.schema"
-  
-# Data Synthesis Settings
-synthesis:
-  num_samples: 1000
-  difficulty_levels: [1, 2, 3, 4, 5]
-  task_types: ["qa", "reasoning", "analysis"]
+data:
+  input_dir: ./data/dev/ud
+  output_dir: ./output_dir
+  output_dir: ./output_dir
+  structured_data: False
+  enable_visual: True
+
+# 启用通过实体名合并实体
+enable_merge_entity_by_name: true
+
+# 启用通过实体名的相似度合并实体
+enable_merge_entity_by_sim: False
+merge_entity_by_sim:
+  threshold: 0.95
+  # embedding_model: sentence-transformers/all-MiniLM-L6-v2
+
+# 启用通过断言的相似度合并断言
+enable_merge_assertion_by_sim: true
+merge_assertion_by_sim:
+  threshold: 0.95
+  # embedding_model: sentence-transformers/all-MiniLM-L6-v2
+
+# 版式解析和KG抽取相关配置
+dataprocessing:
+  enable_assertion_recall: true
+  enable_entity_recall: true
+  mineru:
+    server_url: http://10.178.131.48:30000
+
+  llm:
+    api_key: EMPTY
+    base_url:  
+      - http://10.178.141.79:8000/v1
+      - http://10.178.141.233:8000/v1
+      - http://10.178.133.1:8000/v1
+     
+    model: Qwen3-235B-A22B-Instruct-2507
+    max_concurrent_requests: 256
+
+  vlm:
+    api_key: EMPTY
+    base_url: http://10.178.129.197:8000/v1
+    model: Qwen3-VL-2B-Instruct
+    max_concurrent_requests: 24
+    max_tokens: 4096
+
+embedding_model:
+  api_key: EMPTY
+  base_url: http://10.178.131.43:9000/v1
+  model: qwen3_embedding
+
+# 数据合成相关配置
+subgraph_sampling:
+  sampling_algorithm: no_subgraph_sampling
+  order: 100
+  subgraph_num: 4
+  kwargs:
+    arg1: value1
+    arg2: avlue2
+
+
+trace_generation:
+  selection_method: dfs
+  node_types: ['Entity','Table','Image','Formula'] # ['Document','Chunk','Assertion','Entity','Table','Image','Formula']
+  max_steps: 4
+  num_traces: 4
+  min_deg: 0
+  max_deg: 200
+  mode: in
+  kwargs:
+    arg1: value1
+    arg2: avlue2
+
+
+data_synthesis:
+  api_key: EMPTY
+  base_url:  
+      - http://10.178.141.79:8000/v1
+      - http://10.178.141.233:8000/v1
+      - http://10.178.133.1:8000/v1
+    
+  model: Qwen3-235B-A22B-Instruct-2507
+  task_type: multi_hop_tif
+  max_concurrent_requests: 5
+
+# QA质量过滤相关配置
+evaluation_models:
+  support_models:
+    # 支持度评估模型列表（可以配置多个，支持多数投票）
+    - model: Qwen3-VL-2B-Instruct           # 支持度评估用模型名称
+      base_url: http://10.178.129.197:8000/v1  # 模型服务的 HTTP 基础地址
+      api_key: EMPTY                        # 鉴权用的 API Key（本地服务可为空或固定占位）
+      max_tokens: 1024                      # 单次调用允许的最大生成 token 数
+    - model: Qwen3-VL-2B-Instruct           # 第二个支持度评估模型
+      base_url: http://10.178.129.197:8000/v1
+      api_key: EMPTY
+      max_tokens: 1024
+    - model: Qwen3-VL-2B-Instruct           # 第三个支持度评估模型
+      base_url: http://10.178.129.197:8000/v1
+      api_key: EMPTY
+      max_tokens: 1024
+
+  difficulty_models:
+    # 难度评估使用的模型配置，分为 strong / weak 两个角色
+    strong:
+      model: Qwen3-VL-2B-Instruct           # strong模型
+      base_url: http://10.178.129.197:8000/v1
+      api_key: EMPTY
+      max_tokens: 1024
+    weak:
+      model: Qwen3-VL-2B-Instruct           # weak模型
+      base_url: http://10.178.129.197:8000/v1
+      api_key: EMPTY
+      max_tokens: 1024
+
+  # 新增：复杂度评估使用的大模型配置
+  complexity_model:
+    #评估evaluate_complex的模型（负责对指令复杂度打 1~5 分）
+    model: Qwen3-VL-2B-Instruct
+    base_url: http://10.178.129.197:8000/v1
+    api_key: EMPTY
+    max_tokens: 1024
+
+evaluation:
+  batch_size: 3        # 每次并发评估的样本数量
+  modes:
+    - support               # 启用知识支持度评估
+    - difficulty            # 启用难度评估
+    - complexity            # 启用复杂度评估
+
+  support:
+    mode: majority_vote     # 支持度评估模式：majority_vote（多模型投票）或 single（单模型）
+    models: [0, 1, 2]       # 使用 support_models 列表中的哪些模型（按下标选择）
+
+  difficulty:
+    mode: strong_weak       # strong_weak（强弱模型同时使用），也可设为 strong_only / weak_only
+
+  complexity:
+    enabled: true           # 是否启用复杂度评估
 ```
 
 ### 3️⃣ Run the Project
 ```bash
-python main.py --config configs/dev.yaml
+python main.py 
 ```
 
 **Or run domain-specific examples**:
 ```bash
 # Law domain example
 python main_law.py
-
-# Chemistry domain example
-python main.py --domain chemistry
 ```
 
 ---
@@ -268,75 +389,21 @@ MMKG-RDS/
 
 ---
 
-## 💡 Usage Examples
-
-### Example 1: Build Knowledge Graph from Documents
-```python
-from processor.processor import DataProcessor
-from config import load_config
-
-# Load configuration
-config = load_config("configs/chemistry.yaml")
-
-# Initialize processor
-processor = DataProcessor(config)
-
-# Process documents and build KG
-processor.process_documents("data/chemistry")
-processor.build_knowledge_graph()
-
-# Export to Neo4j
-processor.export_to_neo4j()
-```
-
-### Example 2: Generate Reasoning QA Pairs
-```python
-from data_synthesis.generate_qa import QAGenerator
-
-# Initialize generator
-qa_gen = QAGenerator(
-    kg_path="outputs/graph.graphml",
-    config=config
-)
-
-# Generate QA pairs
-qa_pairs = qa_gen.generate(
-    num_samples=1000,
-    difficulty_range=(2, 4),
-    task_types=["reasoning", "analysis"]
-)
-
-# Save results
-qa_gen.save("outputs/qa_pairs.json")
-```
-
-### Example 3: Evaluate Model Performance
-```bash
-# Evaluate LLM
-python eval/eval_up.py \
-  --model qwen-plus \
-  --data outputs/qa_pairs.json \
-  --output eval_results.json
-
-# Evaluate Vision-Language Model
-python eval/eval_up_vl.py \
-  --model qwen-vl-plus \
-  --data outputs/qa_pairs_vision.json
-```
-
----
-
 ## 📊 Benchmark Results
 
-### MMKG-RDS-Bench Performance
+### MMKG-RDS-Bench Data
+<div align="center">
+  <img src="assets/benchdata.png" alt="MMKG-RDS Benchmark Results" width="900">
+</div>
 
-| Model | Base Accuracy | Fine-tuned Accuracy | Improvement |
-|-------|--------------|---------------------|-------------|
-| Qwen3-0.6B | 42.3% | 51.5% | **+9.2%** |
-| Qwen3-8B | 68.7% | 77.9% | **+9.2%** |
-| Qwen3-32B | 79.4% | 88.6% | **+9.2%** |
+| Model      | Base Accuracy | Fine-tuned Accuracy | Improvement |
+| ---------- | ------------- | ------------------- | ----------- |
+| Qwen3-0.6B | 39.7%         | 51.5%               | **+11.8%**  |
+| Qwen3-8B   | 59.0%         | 65.6%               | **+6.6%**   |
+| Qwen3-32B  | 58.7%         | 67.9%               | **+9.2%**   |
 
-### Domain-Specific Results
+
+### Performance of Various Models Across Different Tasks
 
 | Domain | Sample Size | Avg. Difficulty | Model Accuracy |
 |--------|------------|----------------|----------------|
