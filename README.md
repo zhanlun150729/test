@@ -393,13 +393,13 @@ MMKG-RDS/
 
 ### MMKG-RDS-Bench Data
 <div align="center">
-  <img src="assets/benchdata.png" alt="MMKG-RDS Benchmark Results" width="500">
+  <img src="assets/benchdata.png" alt="MMKG-RDS Benchmark Results" width="900">
 </div>
 
 ### Performance of Various Models Across Different Tasks
 
 <div align="center">
-  <img src="assets/Performance of Various Models Across Different Tasks.png" alt="MMKG-RDS Benchmark Results" width="500">
+  <img src="assets/Performance of Various Models Across Different Tasks.png" alt="MMKG-RDS Benchmark Results" width="900">
 </div>
 
 ### Fine-tuning Experiments with Synthetic Data
