@@ -41,11 +41,11 @@ To address these issues, we propose **MMKG-RDS**—a flexible framework for reas
 ### 🎓 MMKG-RDS-Bench Dataset
 
 We validate MMKG-RDS with the **MMKG-RDS-Bench** dataset:
-- 🔬 **5 domains** (Chemistry, Math, Law, Medicine, Engineering)
-- 📝 **17 task types** (QA, Reasoning, Analysis, etc.)
+- 🔬 **5 domains** (history, organic chemistry, law, stock research reports,and papers)
+- 📝 **17 task types** 
 - 📊 **14,950 high-quality samples**
 
-**Performance Highlights**: Fine-tuning Qwen3 models (0.6B/8B/32B) on a small number of synthesized samples improves reasoning accuracy by **9.2%**. The framework also generates distinct data, challenging existing models on tasks involving tables and formulas.
+**Performance Highlights**: Fine-tuning Qwen3 models (0.6B/8B/32B) on a small number of synthesized samples improves reasoning accuracy by **9.2%**. The framework also generates distinct data, challenging existing models on tasks involving tables and formulas, useful for complex benchmark construction.
 
 ---
 
