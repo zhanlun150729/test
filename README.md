@@ -7,7 +7,7 @@
   
   [![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](https://opensource.org/licenses/Apache-2.0)
   [![Python](https://img.shields.io/badge/Python-3.8%2B-brightgreen.svg)](https://www.python.org/)
-  [![GitHub Stars](https://img.shields.io/github/stars/yourusername/MMKG-RDS?style=social)](https://github.com/yourusername/MMKG-RDS)
+  [![GitHub Stars](https://img.shields.io/github/stars/yourusername/MMKG-RDS?style=social)](https://github.com/360AILAB-NLP/MMKG-RDS)
   
   [English](README.md) | [中文](README_zh.md)
 </div>
@@ -415,11 +415,11 @@ MMKG-RDS/
 
 If you find MMKG-RDS useful in your research, please cite:
 ```bibtex
-@article{mmkg-rds-2024,
+@article{mmkg-rds-2026,
   title={MMKG-RDS: Reasoning Data Synthesis via Deep Mining of Multimodal Knowledge Graphs},
-  author={Your Name and Co-authors},
-  journal={arXiv preprint arXiv:2024.xxxxx},
-  year={2024}
+  author={Co-authors},
+  journal={arXiv preprint arXiv:2026.xxxxx},
+  year={2026}
 }
 ```
 
@@ -449,6 +449,6 @@ This project is licensed under the Apache License 2.0 - see the [LICENSE](LICENS
   
   **⭐ Star us on GitHub — it motivates us a lot!**
   
-  [Report Bug](https://github.com/yourusername/MMKG-RDS/issues) · [Request Feature](https://github.com/yourusername/MMKG-RDS/issues) · [Documentation](https://mmkg-rds.readthedocs.io/)
+  [Report Bug](https://github.com/360AILAB-NLP/MMKG-RDS/issues) · [Request Feature](https://github.com/360AILAB-NLP/MMKG-RDS/issues) · [Documentation](https://mmkg-rds.readthedocs.io/)
   
 </div>
