@@ -396,22 +396,18 @@ MMKG-RDS/
   <img src="assets/benchdata.png" alt="MMKG-RDS Benchmark Results" width="900">
 </div>
 
+### Performance of Various Models Across Different Tasks
+
+<div align="center">
+  <img src="assets/Performance of Various Models Across Different Tasks.png" alt="MMKG-RDS Benchmark Results" width="900">
+</div>
+
+### Fine-tuning Experiments with Synthetic Data
 | Model      | Base Accuracy | Fine-tuned Accuracy | Improvement |
 | ---------- | ------------- | ------------------- | ----------- |
 | Qwen3-0.6B | 39.7%         | 51.5%               | **+11.8%**  |
 | Qwen3-8B   | 59.0%         | 65.6%               | **+6.6%**   |
 | Qwen3-32B  | 58.7%         | 67.9%               | **+9.2%**   |
-
-
-### Performance of Various Models Across Different Tasks
-
-| Domain | Sample Size | Avg. Difficulty | Model Accuracy |
-|--------|------------|----------------|----------------|
-| Chemistry | 3,200 | 3.2/5 | 76.8% |
-| Mathematics | 2,800 | 3.8/5 | 72.4% |
-| Law | 3,100 | 2.9/5 | 81.2% |
-| Medicine | 2,950 | 3.5/5 | 74.6% |
-| Engineering | 2,900 | 3.4/5 | 75.3% |
 
 ---
 
