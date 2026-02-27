@@ -391,7 +391,7 @@ MMKG-RDS/
 
 ## 📊 Benchmark Results
 
-### MMKG-RDS-Bench Data
+### MMKG-RDS-Bench Data Distribution
 <div align="center">
   <img src="assets/benchdata.png" alt="MMKG-RDS Benchmark Results" width="900">
 </div>
